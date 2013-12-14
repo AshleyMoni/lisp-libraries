@@ -1,0 +1,12 @@
+(defmacro collector (&rest exprs)
+  `(let ((collection nil)
+	 (pointer nil))
+     (flet ((collect (item)
+	      (cond ((null collection)
+		     (setf collection (list item)
+			   pointer collection))
+		    (t (setf (cdr pointer) (list item)
+			     pointer (cdr pointer))))))
+       (progn ,@exprs collection))))
+
+(provide 'collector)
